@@ -9,16 +9,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const { renderer, scene, camera } = mindarThree;
+
+  //  更新为新版本正确属性
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  //  添加基础光照
+  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+  scene.add(light);
+
   const anchor = mindarThree.addAnchor(0);
 
   const loader = new GLTFLoader();
-  loader.load('./assets/model.glb', (gltf) => {
-    const model = gltf.scene;
-    model.scale.set(0.5, 0.5, 0.5);
-    anchor.group.add(model);
-  });
+  loader.load(
+    './assets/model.glb',
+    (gltf) => {
+      const model = gltf.scene;
+
+      //  确保模型在正中
+      model.position.set(0, 0, 0);
+      model.scale.set(0.5, 0.5, 0.5);
+
+      anchor.group.add(model);
+    },
+    undefined,
+    (error) => {
+      console.error("❌ 模型加载失败：", error);
+    }
+  );
 
   await mindarThree.start();
+
   renderer.setAnimationLoop(() => {
     renderer.render(scene, camera);
   });
