@@ -1,0 +1,38 @@
+GLTF
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "glTF-Blender-Exporter"
+    },
+    "scene": 0,
+    "scenes": [
+        {
+            "nodes": [0]
+        }
+    ],
+    "nodes": [
+        {
+            "mesh": 0,
+            "name": "Cube"
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": 0
+                    },
+                    "indices": 1,
+                    "mode": 4
+                }
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 192,
+            "uri": "data:application/octet-stream;base64,..."
+        }
+    ]
+}
