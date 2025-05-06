@@ -39,13 +39,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   anchor.group.visible = true;
 
   // 调试：添加测试立方体
-  anchor.group.add(new THREE.AxesHelper(0.3));
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(0.3, 0.3, 0.3),
-    new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+  const loader = new GLTFLoader();
+  loader.load(
+    './assets/model.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      model.position.set(0, 0.15, 0);
+      model.scale.set(0.5, 0.5, 0.5);
+      model.traverse(c => {
+        if (c.isMesh) {
+          c.material.side = THREE.DoubleSide;
+          c.receiveShadow = false;
+        }
+      });
+      anchor.group.add(model);
+    },
+    undefined,
+    (err) => console.error('模型加载失败：', err)
   );
-  box.position.set(0, 0.15, 0);
-  anchor.group.add(box);
+
 
   // 渲染循环
   renderer.setAnimationLoop(() => {
