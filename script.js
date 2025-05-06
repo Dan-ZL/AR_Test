@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       model.scale.set(0.5, 0.5, 0.5);
 
       anchor.group.add(model);
+      
+      // —— 在这里打印调试信息 ——
+      console.log("模型添加到 anchor.group", model);
+      console.log("anchor.group children", anchor.group.children);     
     },
     undefined,
     (error) => {
