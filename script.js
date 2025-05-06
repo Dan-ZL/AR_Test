@@ -3,16 +3,15 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MindARThree } from 'mindar-image-three';
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // 初始化 MindAR
+  // 初始化 MindARThree，禁用内部 resize
   const mindarThree = new MindARThree({
     container: document.body,
     imageTargetSrc: "./assets/target.mind",
-    onResize: () => {},        // 禁用内部自动 resize
+    onResize: () => {},
   });
 
-  // 获取渲染器、场景、摄像机
   const { renderer, scene, camera } = mindarThree;
-  // 确保透明背景
+  // 透明背景设置
   renderer.setClearColor(0x000000, 0);
   renderer.autoClear = false;
 
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 创建锚点
   const anchor = mindarThree.addAnchor(0);
 
-  // 测试：在识别到目标时添加一个绿色立方体
+  // 示例：添加测试几何体
   const box = new THREE.Mesh(
     new THREE.BoxGeometry(0.2, 0.2, 0.2),
     new THREE.MeshBasicMaterial({ color: 0x00ff00 })
@@ -34,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   box.position.set(0, 0.2, 0);
   anchor.group.add(box);
 
-  // 可选：加载实际 GLTF 模型
+  // 可选：加载 GLTF 模型
   const loader = new GLTFLoader();
   loader.load(
     './assets/model.glb',
@@ -49,17 +48,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
       anchor.group.add(model);
-      console.log("模型添加到 anchor.group", model);
-      console.log("anchor.group children", anchor.group.children);
     },
     undefined,
     (error) => console.error("❌ 模型加载失败：", error)
   );
 
-  // 启动 AR 并渲染循环
+  // 强制跳过显隐逻辑：直接渲染
   await mindarThree.start();
+  // 绕过 onTargetFound，可见性始终为 true
+  anchor.group.visible = true;
+
   renderer.setAnimationLoop(() => {
-    renderer.clearDepth();            // 保持视频背景
+    renderer.clearDepth();  // 保持视频背景
     renderer.render(scene, camera);
   });
 });
