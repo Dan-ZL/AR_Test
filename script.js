@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
   scene.add(light);
 
+  scene.add(new THREE.AxesHelper(0.2));
+
   const anchor = mindarThree.addAnchor(0);
 
   const loader = new GLTFLoader();
@@ -26,10 +28,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       const model = gltf.scene;
 
       //  确保模型在正中
-      model.position.set(0, 0, 0);
+      model.position.set(0, 0.2, 0);
       model.scale.set(0.5, 0.5, 0.5);
 
+      
+
       anchor.group.add(model);
+
+      anchor.group.add(new THREE.AxesHelper(0.1));
       
       // —— 在这里打印调试信息 ——
       console.log("模型添加到 anchor.group", model);
